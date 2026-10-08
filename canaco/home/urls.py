@@ -5,4 +5,8 @@ app_name = 'home'
 
 urlpatterns = [
     path('', views.index, name='index'),
+    path('noticia/', views.noticia, name='noticia'),
+    path('categoria/', views.categoria, name='categoria'),
+    path('login/', views.login, name='login'),
+    path('registro/', views.sign_up, name='sign_up'),
 ]

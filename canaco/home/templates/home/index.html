@@ -12,7 +12,7 @@
             </div>
             <div class="carousel-inner">
                 <div class="carousel-item active" data-bs-interval="4500">
-                    <a href="#noticias" class="home-carousel-link">
+                    <a href="{% url 'home:noticia' %}" class="home-carousel-link">
                         <img src="{% static 'images/hero_1.jpg' %}" class="d-block w-100 home-carousel-image" style="height: 400px; object-fit: cover; object-position: center;" alt="Vista destacada de Canaco">
                         <div class="carousel-caption home-carousel-caption text-start">
                             <span>Bienvenido</span>
@@ -44,13 +44,14 @@
             <div class="row justify-content-center">
                 <div class="col-lg-4 mb-4">
                     <article class="post-entry-alt">
-                        <a href="#" class="img-link" aria-label="Imagen de ejemplo">
+                        <a href="{% url 'home:noticia' %}" class="img-link" aria-label="Abrir noticia">
                             <img src="{% static 'images/img_1_horizontal.jpg' %}" alt="Imagen ilustrativa de una noticia" class="img-fluid publication-card-image" style="height: 200px; width: 100%; object-fit: cover; object-position: center;">
                         </a>
                         <div class="excerpt">
-                            <h3>Bienvenido a Canaco</h3>
+                            <h3><a href="{% url 'home:noticia' %}">Bienvenido a Canaco</a></h3>
                             <div class="post-meta align-items-center text-left clearfix"><span>Noticias</span></div>
                             <p>Este espacio mostrará las noticias y novedades del sitio.</p>
+                            <p><a href="{% url 'home:noticia' %}" class="read-more">Saber más</a></p>
                         </div>
                     </article>
                 </div>

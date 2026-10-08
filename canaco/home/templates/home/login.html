@@ -1,0 +1,35 @@
+{% extends 'partials/base.html' %}
+{% load static %}
+{% block title %}Iniciar sesión | Canaco{% endblock %}
+
+{% block content %}
+<section class="account-page">
+    <div class="account-card account-card-sm">
+        <h1>Iniciar sesión</h1>
+        <p>Ingresa a tu cuenta de Canaco.</p>
+        {% if form.errors %}
+            <div class="alert alert-danger" role="alert">Usuario o contraseña incorrectos.</div>
+        {% endif %}
+        {% if messages %}
+            {% for message in messages %}
+                <div class="alert alert-{{ message.tags }}" role="alert">{{ message }}</div>
+            {% endfor %}
+        {% endif %}
+        <form method="post" class="profile-edit-form">
+            {% csrf_token %}
+            <div class="profile-form-row">
+                <label for="username">Usuario</label>
+                <input type="text" id="username" name="username" autocomplete="username" required>
+            </div>
+            <div class="profile-form-row">
+                <label for="password">Contraseña</label>
+                <input type="password" id="password" name="password" autocomplete="current-password" required>
+            </div>
+            <div class="profile-form-actions">
+                <button type="submit" class="btn btn-primary">Ingresar</button>
+                <a href="{% url 'home:sign_up' %}" class="btn btn-outline-secondary">Crear cuenta</a>
+            </div>
+        </form>
+    </div>
+</section>
+{% endblock content %}

@@ -18,6 +18,7 @@
                     <ul class="js-clone-nav d-none d-lg-inline-block text-start site-menu mx-auto">
                         <li class="active"><a href="{% url 'home:index' %}">Inicio</a></li>
                         <li><a href="#noticias">Noticias</a></li>
+                        <li><a href="{% url 'home:categoria' %}">Categorías</a></li>
                     </ul>
                 </div>
                 <div class="site-navigation-actions">
@@ -28,7 +29,8 @@
                         </div>
                     {% else %}
                         <div class="d-none d-lg-flex align-items-center justify-content-end gap-2">
-                            <span class="text-white">Canaco</span>
+                            <a href="{% url 'home:login' %}" class="text-white">Iniciar sesión</a>
+                            <a href="{% url 'home:sign_up' %}" class="btn btn-sm btn-outline-light">Registro</a>
                         </div>
                     {% endif %}
                 </div>

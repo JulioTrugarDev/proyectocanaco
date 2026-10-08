@@ -1,0 +1,36 @@
+{% extends 'partials/base.html' %}
+{% load static %}
+{% block title %}Categorías | Canaco{% endblock %}
+
+{% block content %}
+<section class="section">
+    <div class="container">
+        <div class="row mb-4 align-items-center">
+            <div class="col-lg-8">
+                <h1 class="posts-entry-title">Categoría: Tecnología</h1>
+            </div>
+            <div class="col-lg-4">
+                <label for="category-select" class="form-label">Explorar categorías</label>
+                <select id="category-select" class="form-control" onchange="if (this.value) window.location.href=this.value;">
+                    <option value="{% url 'home:categoria' %}">Todas las categorías</option>
+                    <option value="{% url 'home:categoria' %}" selected>Tecnología</option>
+                </select>
+            </div>
+        </div>
+        <article class="row mb-5 align-items-center">
+            <div class="col-lg-3 mb-3 mb-lg-0">
+                <a href="{% url 'home:noticia' %}" class="img-link">
+                    <img src="{% static 'images/hero_1.jpg' %}" alt="Portada de Bienvenido a Canaco" class="img-fluid category-post-image">
+                </a>
+            </div>
+            <div class="col-lg-8">
+                <span class="date">Noticias &bullet; Tecnología</span>
+                <h2><a href="{% url 'home:noticia' %}">Bienvenido a Canaco</a></h2>
+                <p>Conoce las noticias y novedades de interés para la comunidad empresarial.</p>
+                <p><a href="{% url 'home:noticia' %}" class="btn btn-sm btn-outline-primary">Leer más</a></p>
+            </div>
+        </article>
+        <p class="text-muted">Esta es una maqueta de categoría; las publicaciones se conectarán a la base de datos en un laboratorio posterior.</p>
+    </div>
+</section>
+{% endblock content %}

@@ -1,0 +1,78 @@
+{% extends 'partials/base.html' %}
+{% load static %}
+{% block title %}Bienvenido a Canaco{% endblock %}
+
+{% block content %}
+<section class="section">
+    <div class="container">
+        <div class="alert alert-info alert-dismissible fade show" role="alert">
+            Noticias y novedades para la comunidad empresarial.
+            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Cerrar"></button>
+        </div>
+        <div class="row blog-entries">
+            <article class="col-md-12 col-lg-8 main-content">
+                <h1 class="mb-4">Bienvenido a Canaco</h1>
+                <img src="{% static 'images/hero_1.jpg' %}" alt="Imagen de portada de la noticia" class="img-fluid rounded mb-4 publication-cover-image" style="max-height: 500px; width: 100%; object-fit: cover; object-position: center;">
+                <div class="post-meta mb-4">
+                    <span>Noticias</span>
+                    <span>&nbsp;-&nbsp;<a href="{% url 'home:categoria' %}">Tecnología</a></span>
+                    <span>&nbsp;-&nbsp;Publicado por Canaco</span>
+                </div>
+                <h2>Resumen</h2>
+                <p>Este sitio reúne noticias y novedades de interés para la comunidad empresarial.</p>
+                <h2>La noticia</h2>
+                <div class="post-content-body">
+                    <p>Bienvenido al espacio de noticias de Canaco. Aquí podrás encontrar información, anuncios y temas relevantes para las empresas y personas que forman parte de nuestra comunidad.</p>
+                    <p>Esta página es la maqueta de detalle solicitada en el Laboratorio 07. El contenido podrá sustituirse por publicaciones dinámicas cuando se conecte con los modelos de noticias.</p>
+                </div>
+
+                <h2 class="mt-5">Galería</h2>
+                <div class="row my-4">
+                    <div class="col-md-4 mb-4">
+                        <img src="{% static 'images/hero_2.jpg' %}" alt="Imagen de la galería" class="img-fluid rounded publication-gallery-image" style="height: 250px; width: 100%; object-fit: cover; object-position: center;">
+                    </div>
+                </div>
+
+                <div class="pt-4 comment-wrap">
+                    <h2 class="mb-4">Comentarios</h2>
+                    <p class="text-muted">Todavía no hay comentarios.</p>
+                    <form method="post" class="mt-4">
+                        {% csrf_token %}
+                        <div class="mb-3">
+                            <label for="contenido" class="form-label">Agregar comentario</label>
+                            <textarea name="contenido" id="contenido" rows="4" class="form-control" required></textarea>
+                        </div>
+                        <button type="submit" class="btn btn-primary">Agregar comentario</button>
+                    </form>
+                    <p class="mt-3"><a href="{% url 'home:login' %}" class="btn btn-outline-primary">Inicia sesión para comentar</a></p>
+                </div>
+            </article>
+
+            <aside class="col-md-12 col-lg-4 sidebar">
+                <div class="sidebar-box">
+                    <h2 class="heading">Otras noticias</h2>
+                    <div class="post-entry-sidebar">
+                        <ul>
+                            <li>
+                                <a href="{% url 'home:noticia' %}">
+                                    <img src="{% static 'images/hero_2.jpg' %}" alt="Vista previa de otra noticia" class="me-4 rounded sidebar-post-image" style="width: 70px; height: 70px; object-fit: cover; object-position: center;">
+                                    <div class="text">
+                                        <h3>Noticias de Canaco</h3>
+                                        <div class="post-meta"><span>Recientes</span></div>
+                                    </div>
+                                </a>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+                <div class="sidebar-box">
+                    <h2 class="heading">Categorías</h2>
+                    <ul class="categories">
+                        <li><a href="{% url 'home:categoria' %}">Tecnología</a></li>
+                    </ul>
+                </div>
+            </aside>
+        </div>
+    </div>
+</section>
+{% endblock content %}
