@@ -1,12 +1,61 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
-</head>
-<body>
-    <h1>Estas en la página Index</h1>
-    <h2>Bienvenido</h2>
-</body>
-</html>
+{% extends 'partials/base.html' %}
+{% load static %}
+
+{% block title %}Inicio | Canaco{% endblock %}
+
+{% block content %}
+<main>
+    <section class="home-carousel-section bg-light" aria-label="Noticia destacada">
+        <div id="homeCarousel" class="carousel slide home-carousel" data-bs-ride="carousel">
+            <div class="carousel-indicators">
+                <button type="button" data-bs-target="#homeCarousel" data-bs-slide-to="0" class="active" aria-current="true" aria-label="Noticia destacada"></button>
+            </div>
+            <div class="carousel-inner">
+                <div class="carousel-item active" data-bs-interval="4500">
+                    <a href="#noticias" class="home-carousel-link">
+                        <img src="{% static 'images/hero_1.jpg' %}" class="d-block w-100 home-carousel-image" style="height: 400px; object-fit: cover; object-position: center;" alt="Vista destacada de Canaco">
+                        <div class="carousel-caption home-carousel-caption text-start">
+                            <span>Bienvenido</span>
+                            <h1>Noticias y novedades</h1>
+                            <p>Información para nuestra comunidad empresarial.</p>
+                        </div>
+                    </a>
+                </div>
+            </div>
+            <button class="carousel-control-prev" type="button" data-bs-target="#homeCarousel" data-bs-slide="prev" aria-label="Anterior">
+                <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                <span class="visually-hidden">Anterior</span>
+            </button>
+            <button class="carousel-control-next" type="button" data-bs-target="#homeCarousel" data-bs-slide="next" aria-label="Siguiente">
+                <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                <span class="visually-hidden">Siguiente</span>
+            </button>
+        </div>
+    </section>
+
+    <section id="noticias" class="section recent-news-section">
+        <div class="container">
+            <div class="row mb-4 justify-content-center">
+                <div class="col-lg-8 text-center">
+                    <h2 class="posts-entry-title">Noticias recientes</h2>
+                    <p class="text-muted">Próximamente encontrarás aquí las publicaciones más recientes.</p>
+                </div>
+            </div>
+            <div class="row justify-content-center">
+                <div class="col-lg-4 mb-4">
+                    <article class="post-entry-alt">
+                        <a href="#" class="img-link" aria-label="Imagen de ejemplo">
+                            <img src="{% static 'images/img_1_horizontal.jpg' %}" alt="Imagen ilustrativa de una noticia" class="img-fluid publication-card-image" style="height: 200px; width: 100%; object-fit: cover; object-position: center;">
+                        </a>
+                        <div class="excerpt">
+                            <h3>Bienvenido a Canaco</h3>
+                            <div class="post-meta align-items-center text-left clearfix"><span>Noticias</span></div>
+                            <p>Este espacio mostrará las noticias y novedades del sitio.</p>
+                        </div>
+                    </article>
+                </div>
+            </div>
+        </div>
+    </section>
+</main>
+{% endblock content %}

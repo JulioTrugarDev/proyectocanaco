@@ -1,0 +1,53 @@
+{% load static %}
+<footer class="site-footer">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-4">
+                <div class="widget">
+                    <h3 class="mb-4">Acerca de</h3>
+                    <p>Noticias y novedades para la comunidad empresarial.</p>
+                </div>
+                <div class="widget">
+                    <h3>Redes sociales</h3>
+                    <ul class="list-unstyled social">
+                        <li><a href="#" aria-label="Instagram"><span class="icon-instagram"></span></a></li>
+                        <li><a href="#" aria-label="Twitter"><span class="icon-twitter"></span></a></li>
+                        <li><a href="#" aria-label="Facebook"><span class="icon-facebook"></span></a></li>
+                    </ul>
+                </div>
+            </div>
+            <div class="col-lg-4 ps-lg-5">
+                <div class="widget">
+                    <h3 class="mb-4">Secciones</h3>
+                    <ul class="list-unstyled links">
+                        <li><a href="{% url 'home:index' %}">Inicio</a></li>
+                        <li><a href="#noticias">Noticias recientes</a></li>
+                    </ul>
+                </div>
+            </div>
+            <div class="col-lg-4">
+                <div class="widget">
+                    <h3 class="mb-4">Entradas recientes</h3>
+                    <div class="post-entry-footer">
+                        <ul>
+                            <li>
+                                <a href="#noticias" class="d-flex align-items-center">
+                                    <img src="{% static 'images/img_1_sq.jpg' %}" alt="Imagen de una noticia" class="me-3 rounded" style="width: 70px; height: 70px; object-fit: cover;">
+                                    <div class="text">
+                                        <h4>Bienvenido a Canaco</h4>
+                                        <div class="post-meta"><span>Noticias recientes</span></div>
+                                    </div>
+                                </a>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="row mt-5">
+            <div class="col-12 text-center">
+                <p>Copyright &copy;<script>document.write(new Date().getFullYear());</script> Canaco. Todos los derechos reservados.</p>
+            </div>
+        </div>
+    </div>
+</footer>

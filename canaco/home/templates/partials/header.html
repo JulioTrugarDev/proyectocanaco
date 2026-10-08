@@ -1,0 +1,38 @@
+{% load static %}
+<div class="site-mobile-menu site-navbar-target">
+    <div class="site-mobile-menu-header">
+        <div class="site-mobile-menu-close"><span class="icofont-close js-menu-toggle"></span></div>
+    </div>
+    <div class="site-mobile-menu-body"></div>
+</div>
+<nav class="site-nav">
+    <div class="container">
+        <div class="menu-bg-wrap">
+            <div class="site-navigation">
+                <a href="{% url 'home:index' %}" class="logo m-0">Canaco<span class="text-primary">.</span></a>
+                <div class="site-navigation-center text-center">
+                    <form action="#" class="search-form d-inline-block d-lg-none" role="search">
+                        <input type="search" class="form-control" placeholder="Buscar..." aria-label="Buscar">
+                        <span class="bi-search" aria-hidden="true"></span>
+                    </form>
+                    <ul class="js-clone-nav d-none d-lg-inline-block text-start site-menu mx-auto">
+                        <li class="active"><a href="{% url 'home:index' %}">Inicio</a></li>
+                        <li><a href="#noticias">Noticias</a></li>
+                    </ul>
+                </div>
+                <div class="site-navigation-actions">
+                    <a href="#" class="burger ms-auto site-menu-toggle js-menu-toggle d-inline-block d-lg-none light" aria-label="Abrir menú"><span></span></a>
+                    {% if request.user.is_authenticated %}
+                        <div class="d-none d-lg-flex align-items-center justify-content-end gap-2">
+                            <span class="text-white">{{ request.user.get_username }}</span>
+                        </div>
+                    {% else %}
+                        <div class="d-none d-lg-flex align-items-center justify-content-end gap-2">
+                            <span class="text-white">Canaco</span>
+                        </div>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+    </div>
+</nav>
