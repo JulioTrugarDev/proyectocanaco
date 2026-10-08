@@ -6,7 +6,7 @@ Un espacio web para compartir y consultar noticias y novedades de interés para 
 
 - Python
 - Django
-- HTML y CSS
+- HTML, CSS y JavaScript
 
 ---
 *Proyecto escolar — Segunda unidad*
