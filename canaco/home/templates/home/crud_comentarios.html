@@ -5,12 +5,25 @@
 <div class="container mt-4">
     <h1 class="mb-2 text-center">Comentarios</h1>
     <p class="text-muted text-center">Revisa y administra los comentarios de las publicaciones.</p>
-    <div class="alert alert-info" role="status">Maqueta visual: los comentarios y sus acciones se conectarán posteriormente.</div>
-    <div class="table-responsive">
-        <table class="table table-striped table-hover align-middle">
-            <thead class="table-primary"><tr><th>Autor</th><th>Noticia</th><th>Fecha</th><th>Contenido</th><th>Estado</th><th>Acciones</th></tr></thead>
-            <tbody><tr><td colspan="6" class="text-center text-muted">No hay comentarios para mostrar.</td></tr></tbody>
-        </table>
-    </div>
+    {% if messages %}{% for message in messages %}<div class="alert alert-{{ message.tags }}" role="alert">{{ message }}</div>{% endfor %}{% endif %}
+    <div class="table-responsive"><table class="table table-striped table-hover align-middle">
+        <thead class="table-primary"><tr><th>Autor</th><th>Noticia</th><th>Fecha</th><th>Contenido</th><th>Estado</th><th>Acciones</th></tr></thead>
+        <tbody>
+            {% for comentario in comentarios %}
+            <tr>
+                <td>{{ comentario.user.username }}</td>
+                <td><a href="{% url 'home:noticia_detalle' comentario.publicacion.pk %}">{{ comentario.publicacion.titulo }}</a></td>
+                <td>{{ comentario.createdat|date:'d/m/Y H:i' }}</td>
+                <td>{{ comentario.contenido|truncatechars:140 }}</td>
+                <td>{{ comentario.get_estado_display }}</td>
+                <td class="text-nowrap">
+                    {% if comentario.estado != 'aprobado' %}<form method="post" action="{% url 'home:aprobar_comentario' comentario.pk %}" class="d-inline">{% csrf_token %}<button class="btn btn-sm btn-outline-success" type="submit">Aprobar</button></form>{% endif %}
+                    {% if comentario.estado != 'bloqueado' %}<form method="post" action="{% url 'home:bloquear_comentario' comentario.pk %}" class="d-inline">{% csrf_token %}<button class="btn btn-sm btn-outline-warning" type="submit">Bloquear</button></form>{% endif %}
+                    <form method="post" action="{% url 'home:eliminar_comentario' comentario.pk %}" class="d-inline" onsubmit="return confirm('¿Eliminar este comentario?');">{% csrf_token %}<button class="btn btn-sm btn-outline-danger" type="submit">Eliminar</button></form>
+                </td>
+            </tr>
+            {% empty %}<tr><td colspan="6" class="text-center text-muted">No hay comentarios para mostrar.</td></tr>{% endfor %}
+        </tbody>
+    </table></div>
 </div>
 {% endblock content %}

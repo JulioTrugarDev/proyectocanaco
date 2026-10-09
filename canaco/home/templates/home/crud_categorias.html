@@ -4,7 +4,7 @@
 {% block content %}
 <div class="container mt-4">
     <h1 class="mb-3 text-center">Administrar categorías</h1>
-    <div class="alert alert-info" role="status">Maqueta visual: las categorías se guardarán cuando se conecte la base de datos.</div>
+    {% if messages %}{% for message in messages %}<div class="alert alert-{{ message.tags }}" role="alert">{{ message }}</div>{% endfor %}{% endif %}
     <div class="card mb-4"><div class="card-body">
         <form method="post" class="row g-2">
             {% csrf_token %}
@@ -14,7 +14,19 @@
     </div></div>
     <div class="table-responsive"><table class="table table-striped table-hover align-middle">
         <thead class="table-primary"><tr><th>#</th><th>Nombre</th><th>Registrado por</th><th>Fecha</th><th>Acciones</th></tr></thead>
-        <tbody><tr><td>1</td><td>Tecnología</td><td>—</td><td>—</td><td><button type="button" class="btn btn-outline-secondary btn-sm" disabled>Editar</button> <button type="button" class="btn btn-outline-danger btn-sm" disabled>Eliminar</button></td></tr></tbody>
+        <tbody>
+            {% for categoria in categorias %}
+            <tr>
+                <td>{{ forloop.counter }}</td><td>{{ categoria.nombre }}</td><td>{{ categoria.fk_user.username|default:'—' }}</td><td>{{ categoria.createdat|date:'d/m/Y H:i' }}</td>
+                <td class="text-nowrap">
+                    <a href="{% url 'home:editar_categoria' categoria.pk %}" class="btn btn-outline-secondary btn-sm">Editar</a>
+                    <form method="post" action="{% url 'home:eliminar_categoria' categoria.pk %}" class="d-inline" onsubmit="return confirm('¿Eliminar esta categoría?');">
+                        {% csrf_token %}<button type="submit" class="btn btn-outline-danger btn-sm">Eliminar</button>
+                    </form>
+                </td>
+            </tr>
+            {% empty %}<tr><td colspan="5" class="text-center text-muted">Aún no hay categorías.</td></tr>{% endfor %}
+        </tbody>
     </table></div>
 </div>
 {% endblock content %}

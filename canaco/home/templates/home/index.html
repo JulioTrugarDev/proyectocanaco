@@ -35,26 +35,29 @@
 
     <section id="noticias" class="section recent-news-section">
         <div class="container">
+            {% if messages %}{% for message in messages %}<div class="alert alert-{{ message.tags }}" role="alert">{{ message }}</div>{% endfor %}{% endif %}
             <div class="row mb-4 justify-content-center">
                 <div class="col-lg-8 text-center">
                     <h2 class="posts-entry-title">Noticias recientes</h2>
-                    <p class="text-muted">Próximamente encontrarás aquí las publicaciones más recientes.</p>
+                    <p class="text-muted">Publicaciones recientes de nuestra comunidad.</p>
                 </div>
             </div>
             <div class="row justify-content-center">
+                {% for publicacion in publicaciones %}
                 <div class="col-lg-4 mb-4">
                     <article class="post-entry-alt">
-                        <a href="{% url 'home:noticia' %}" class="img-link" aria-label="Abrir noticia">
-                            <img src="{% static 'images/img_1_horizontal.jpg' %}" alt="Imagen ilustrativa de una noticia" class="img-fluid publication-card-image" style="height: 200px; width: 100%; object-fit: cover; object-position: center;">
+                        <a href="{% url 'home:noticia_detalle' publicacion.pk %}" class="img-link" aria-label="Abrir noticia">
+                            {% if publicacion.imagen_portada %}<img src="{{ publicacion.imagen_portada.display_url }}" alt="{{ publicacion.titulo }}" class="img-fluid publication-card-image" style="height:200px;width:100%;object-fit:cover;object-position:center;">{% else %}<img src="{% static 'images/img_1_horizontal.jpg' %}" alt="Noticia" class="img-fluid publication-card-image" style="height:200px;width:100%;object-fit:cover;object-position:center;">{% endif %}
                         </a>
                         <div class="excerpt">
-                            <h3><a href="{% url 'home:noticia' %}">Bienvenido a Canaco</a></h3>
-                            <div class="post-meta align-items-center text-left clearfix"><span>Noticias</span></div>
-                            <p>Este espacio mostrará las noticias y novedades del sitio.</p>
-                            <p><a href="{% url 'home:noticia' %}" class="read-more">Saber más</a></p>
+                            <h3><a href="{% url 'home:noticia_detalle' publicacion.pk %}">{{ publicacion.titulo }}</a></h3>
+                            <div class="post-meta align-items-center text-left clearfix"><span>{% if publicacion.categoria %}{{ publicacion.categoria.nombre }}{% else %}Noticias{% endif %} · {{ publicacion.createdat|date:'d M Y' }}</span></div>
+                            <p>{{ publicacion.resumen|truncatechars:140 }}</p>
+                            <p><a href="{% url 'home:noticia_detalle' publicacion.pk %}" class="read-more">Saber más</a></p>
                         </div>
                     </article>
                 </div>
+                {% empty %}<div class="col-lg-8 text-center"><p class="text-muted">Aún no hay noticias publicadas.</p></div>{% endfor %}
             </div>
         </div>
     </section>

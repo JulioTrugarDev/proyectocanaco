@@ -1,36 +1,31 @@
 {% extends 'partials/base.html' %}
 {% load static %}
-{% block title %}Categorías | Canaco{% endblock %}
+{% block title %}{% if categoria_seleccionada %}{{ categoria_seleccionada.nombre }}{% else %}Categorías{% endif %} | Canaco{% endblock %}
 
 {% block content %}
 <section class="section">
     <div class="container">
         <div class="row mb-4 align-items-center">
-            <div class="col-lg-8">
-                <h1 class="posts-entry-title">Categoría: Tecnología</h1>
-            </div>
+            <div class="col-lg-8"><h1 class="posts-entry-title">{% if categoria_seleccionada %}Categoría: {{ categoria_seleccionada.nombre }}{% else %}Noticias por categoría{% endif %}</h1></div>
             <div class="col-lg-4">
                 <label for="category-select" class="form-label">Explorar categorías</label>
                 <select id="category-select" class="form-control" onchange="if (this.value) window.location.href=this.value;">
-                    <option value="{% url 'home:categoria' %}">Todas las categorías</option>
-                    <option value="{% url 'home:categoria' %}" selected>Tecnología</option>
+                    <option value="{% url 'home:categoria' %}" {% if not categoria_seleccionada %}selected{% endif %}>Todas las categorías</option>
+                    {% for categoria in categorias %}<option value="{% url 'home:categoria_detalle' categoria.pk %}" {% if categoria_seleccionada.pk == categoria.pk %}selected{% endif %}>{{ categoria.nombre }}</option>{% endfor %}
                 </select>
             </div>
         </div>
+        {% for publicacion in publicaciones %}
         <article class="row mb-5 align-items-center">
-            <div class="col-lg-3 mb-3 mb-lg-0">
-                <a href="{% url 'home:noticia' %}" class="img-link">
-                    <img src="{% static 'images/hero_1.jpg' %}" alt="Portada de Bienvenido a Canaco" class="img-fluid category-post-image">
-                </a>
-            </div>
+            {% if publicacion.imagen_portada %}<div class="col-lg-3 mb-3 mb-lg-0"><a href="{% url 'home:noticia_detalle' publicacion.pk %}" class="img-link"><img src="{{ publicacion.imagen_portada.display_url }}" alt="{{ publicacion.titulo }}" class="img-fluid category-post-image"></a></div>{% endif %}
             <div class="col-lg-8">
-                <span class="date">Noticias &bullet; Tecnología</span>
-                <h2><a href="{% url 'home:noticia' %}">Bienvenido a Canaco</a></h2>
-                <p>Conoce las noticias y novedades de interés para la comunidad empresarial.</p>
-                <p><a href="{% url 'home:noticia' %}" class="btn btn-sm btn-outline-primary">Leer más</a></p>
+                <span class="date">{{ publicacion.createdat|date:'d M Y' }} &bullet; {% if publicacion.categoria %}{{ publicacion.categoria.nombre }}{% else %}Sin categoría{% endif %}</span>
+                <h2><a href="{% url 'home:noticia_detalle' publicacion.pk %}">{{ publicacion.titulo }}</a></h2>
+                <p>{{ publicacion.resumen }}</p>
+                <p><a href="{% url 'home:noticia_detalle' publicacion.pk %}" class="btn btn-sm btn-outline-primary">Leer más</a></p>
             </div>
         </article>
-        <p class="text-muted">Esta es una maqueta de categoría; las publicaciones se conectarán a la base de datos en un laboratorio posterior.</p>
+        {% empty %}<p class="text-muted">No hay noticias publicadas en esta categoría.</p>{% endfor %}
     </div>
 </section>
 {% endblock content %}
