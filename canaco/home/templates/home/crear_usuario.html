@@ -1,24 +1,42 @@
 {% extends 'partials/base.html' %}
-{% load static %}
-{% block title %}Crear usuario | Canaco{% endblock %}
+{% block title %}{% if usuario_editado %}Editar usuario{% else %}Crear usuario{% endif %} | Canaco{% endblock %}
 
 {% block content %}
 <section class="account-page">
     <div class="account-card">
-        <h1>Crear una cuenta</h1>
-        <p>Formulario de administración de usuarios.</p>
-        <div class="alert alert-info" role="status">Maqueta visual: la cuenta no se guardará hasta implementar la gestión de usuarios.</div>
+        <h1>{% if usuario_editado %}Editar cuenta{% else %}Crear una cuenta{% endif %}</h1>
+        {% if usuario_editado %}
+            <p>Estás modificando a <strong>{{ usuario_editado.username }}</strong>.</p>
+        {% else %}
+            <p>Estos datos se guardarán en el perfil del usuario.</p>
+        {% endif %}
+        {% if messages %}
+            {% for message in messages %}
+                <div class="alert alert-{{ message.tags }}" role="alert">{{ message }}</div>
+            {% endfor %}
+        {% endif %}
         <form method="post" class="profile-edit-form">
             {% csrf_token %}
-            <div class="profile-form-row"><label for="username">Usuario</label><input type="text" id="username" name="username" required></div>
-            <div class="profile-form-row"><label for="email">Correo</label><input type="email" id="email" name="email" required></div>
-            <div class="profile-form-row"><label for="first_name">Nombre</label><input type="text" id="first_name" name="first_name"></div>
-            <div class="profile-form-row"><label for="apellido_paterno">Apellido paterno</label><input type="text" id="apellido_paterno" name="apellido_paterno"></div>
-            <div class="profile-form-row"><label for="apellido_materno">Apellido materno</label><input type="text" id="apellido_materno" name="apellido_materno"></div>
-            <div class="profile-form-row"><label for="rol">Rol</label><select id="rol" name="rol"><option value="colaborador">Colaborador</option><option value="editor">Editor</option><option value="administrador">Administrador</option></select></div>
-            <div class="profile-form-row"><label for="password1">Contraseña</label><input type="password" id="password1" name="password1" required></div>
-            <div class="profile-form-row"><label for="password2">Confirmar contraseña</label><input type="password" id="password2" name="password2" required></div>
-            <div class="profile-form-actions"><button type="submit" class="btn btn-success">Crear usuario</button><a href="{% url 'home:crud_usuarios' %}" class="btn btn-outline-secondary">Volver a usuarios</a></div>
+            <div class="profile-form-row"><label for="username">Usuario</label><input type="text" id="username" name="username" value="{{ usuario_editado.username|default:'' }}" required></div>
+            <div class="profile-form-row"><label for="email">Correo</label><input type="email" id="email" name="email" value="{{ usuario_editado.email|default:'' }}"></div>
+            <div class="profile-form-row"><label for="first_name">Nombre</label><input type="text" id="first_name" name="first_name" value="{{ usuario_editado.first_name|default:'' }}"></div>
+            <div class="profile-form-row"><label for="apellido_paterno">Apellido paterno</label><input type="text" id="apellido_paterno" name="apellido_paterno" value="{{ perfil_editado.apellido_paterno|default:'' }}"></div>
+            <div class="profile-form-row"><label for="apellido_materno">Apellido materno</label><input type="text" id="apellido_materno" name="apellido_materno" value="{{ perfil_editado.apellido_materno|default:'' }}"></div>
+            <div class="profile-form-row">
+                <label for="rol">Rol</label>
+                <select id="rol" name="rol">
+                    <option value="colaborador" {% if not usuario_editado.is_staff and not usuario_editado.is_superuser %}selected{% endif %}>Colaborador</option>
+                    <option value="editor" {% if usuario_editado.is_staff and not usuario_editado.is_superuser %}selected{% endif %}>Editor</option>
+                    <option value="administrador" {% if usuario_editado.is_superuser %}selected{% endif %}>Administrador</option>
+                </select>
+            </div>
+            <div class="profile-form-row"><label for="password1">Contraseña</label><input type="password" id="password1" name="password1" {% if not usuario_editado %}required{% endif %}></div>
+            <div class="profile-form-row"><label for="password2">Confirmar contraseña</label><input type="password" id="password2" name="password2" {% if not usuario_editado %}required{% endif %}></div>
+            {% if usuario_editado %}<p class="text-muted">Deja la contraseña vacía para conservar la actual.</p>{% endif %}
+            <div class="profile-form-actions">
+                <button type="submit" class="btn btn-success">{% if usuario_editado %}Guardar cambios{% else %}Crear usuario{% endif %}</button>
+                <a href="{% url 'home:crud_usuarios' %}" class="btn btn-outline-secondary">Volver a usuarios</a>
+            </div>
         </form>
     </div>
 </section>

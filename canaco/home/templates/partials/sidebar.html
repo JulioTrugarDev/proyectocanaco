@@ -12,7 +12,10 @@
         <li><a href="{% url 'home:crud_usuarios' %}" class="nav-link panel-nav-link {% if current == 'crud_usuarios' or current == 'crear_usuario' %}active{% endif %}"><span>Usuarios</span></a></li>
         <li><a href="{% url 'home:crud_cambiar_contrasena' %}" class="nav-link panel-nav-link {% if current == 'crud_cambiar_contrasena' %}active{% endif %}"><span>Cambiar contraseña</span></a></li>
         <li class="mt-3">
-            <a href="{% url 'home:login' %}" class="btn btn-danger panel-logout-button w-100">Cerrar sesión</a>
+            <form method="post" action="{% url 'home:logout' %}">
+                {% csrf_token %}
+                <button type="submit" class="btn btn-danger panel-logout-button w-100">Cerrar sesión</button>
+            </form>
         </li>
     </ul>
 </aside>

@@ -6,7 +6,9 @@
     <div class="profile-edit-card">
         <h1>Cambiar contraseña</h1>
         <p>Actualiza la contraseña de tu cuenta.</p>
-        <div class="alert alert-info" role="status">Maqueta visual: el cambio de contraseña se conectará a la gestión de usuarios.</div>
+        {% if messages %}
+            {% for message in messages %}<div class="alert alert-{{ message.tags }}" role="alert">{{ message }}</div>{% endfor %}
+        {% endif %}
         <form method="post" class="profile-edit-form">
             {% csrf_token %}
             <div class="profile-form-row"><label for="actual">Contraseña actual</label><input type="password" id="actual" name="actual" autocomplete="current-password" required></div>
