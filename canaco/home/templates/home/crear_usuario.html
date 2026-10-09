@@ -1,0 +1,25 @@
+{% extends 'partials/base.html' %}
+{% load static %}
+{% block title %}Crear usuario | Canaco{% endblock %}
+
+{% block content %}
+<section class="account-page">
+    <div class="account-card">
+        <h1>Crear una cuenta</h1>
+        <p>Formulario de administración de usuarios.</p>
+        <div class="alert alert-info" role="status">Maqueta visual: la cuenta no se guardará hasta implementar la gestión de usuarios.</div>
+        <form method="post" class="profile-edit-form">
+            {% csrf_token %}
+            <div class="profile-form-row"><label for="username">Usuario</label><input type="text" id="username" name="username" required></div>
+            <div class="profile-form-row"><label for="email">Correo</label><input type="email" id="email" name="email" required></div>
+            <div class="profile-form-row"><label for="first_name">Nombre</label><input type="text" id="first_name" name="first_name"></div>
+            <div class="profile-form-row"><label for="apellido_paterno">Apellido paterno</label><input type="text" id="apellido_paterno" name="apellido_paterno"></div>
+            <div class="profile-form-row"><label for="apellido_materno">Apellido materno</label><input type="text" id="apellido_materno" name="apellido_materno"></div>
+            <div class="profile-form-row"><label for="rol">Rol</label><select id="rol" name="rol"><option value="colaborador">Colaborador</option><option value="editor">Editor</option><option value="administrador">Administrador</option></select></div>
+            <div class="profile-form-row"><label for="password1">Contraseña</label><input type="password" id="password1" name="password1" required></div>
+            <div class="profile-form-row"><label for="password2">Confirmar contraseña</label><input type="password" id="password2" name="password2" required></div>
+            <div class="profile-form-actions"><button type="submit" class="btn btn-success">Crear usuario</button><a href="{% url 'home:crud_usuarios' %}" class="btn btn-outline-secondary">Volver a usuarios</a></div>
+        </form>
+    </div>
+</section>
+{% endblock content %}

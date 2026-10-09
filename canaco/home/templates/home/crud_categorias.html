@@ -1,0 +1,20 @@
+{% extends 'partials/sidebar_base.html' %}
+{% block title %}Categorías | Panel Canaco{% endblock %}
+
+{% block content %}
+<div class="container mt-4">
+    <h1 class="mb-3 text-center">Administrar categorías</h1>
+    <div class="alert alert-info" role="status">Maqueta visual: las categorías se guardarán cuando se conecte la base de datos.</div>
+    <div class="card mb-4"><div class="card-body">
+        <form method="post" class="row g-2">
+            {% csrf_token %}
+            <div class="col-md-9"><label class="visually-hidden" for="nombre">Nombre de la categoría</label><input type="text" id="nombre" name="nombre" class="form-control" placeholder="Nueva categoría" required></div>
+            <div class="col-md-3 d-grid"><button type="submit" class="btn btn-primary">Agregar</button></div>
+        </form>
+    </div></div>
+    <div class="table-responsive"><table class="table table-striped table-hover align-middle">
+        <thead class="table-primary"><tr><th>#</th><th>Nombre</th><th>Registrado por</th><th>Fecha</th><th>Acciones</th></tr></thead>
+        <tbody><tr><td>1</td><td>Tecnología</td><td>—</td><td>—</td><td><button type="button" class="btn btn-outline-secondary btn-sm" disabled>Editar</button> <button type="button" class="btn btn-outline-danger btn-sm" disabled>Eliminar</button></td></tr></tbody>
+    </table></div>
+</div>
+{% endblock content %}

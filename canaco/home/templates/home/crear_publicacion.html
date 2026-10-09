@@ -1,0 +1,37 @@
+{% extends 'partials/sidebar_base.html' %}
+{% load static %}
+{% block title %}Crear publicación | Panel Canaco{% endblock %}
+{% block extra_css %}
+<link href="https://cdn.jsdelivr.net/npm/quill@2.0.3/dist/quill.snow.css" rel="stylesheet">
+<style>.ql-editor.ql-blank::before { left: 27px; right: 15px; font-style: normal; }</style>
+{% endblock extra_css %}
+
+{% block content %}
+<div class="container mt-4">
+    <h1 class="mb-4 text-center">Crear nueva publicación</h1>
+    <div class="alert alert-info" role="status">Maqueta visual: guardar publicaciones se habilitará cuando se conecten los modelos.</div>
+    <form class="formEditor" method="post" enctype="multipart/form-data">
+        {% csrf_token %}
+        <div class="mb-3"><label for="titulo" class="form-label">Título</label><input type="text" class="form-control" id="titulo" name="titulo" placeholder="Título de la publicación" required></div>
+        <div class="mb-3"><label for="resumen" class="form-label">Resumen</label><textarea class="form-control" id="resumen" name="resumen" rows="3" required></textarea></div>
+        <div class="row">
+            <div class="col-md-6 mb-3"><label for="categoria" class="form-label">Categoría</label><select class="form-control" id="categoria" name="categoria"><option value="">Sin categoría</option><option value="tecnologia">Tecnología</option></select></div>
+            <div class="col-md-6 mb-3"><label for="estado" class="form-label">Estado</label><select class="form-control" id="estado" name="estado"><option value="borrador">Borrador</option><option value="publicado">Publicado</option></select></div>
+        </div>
+        <div class="mb-3"><label for="imagen_portada" class="form-label">Imagen de portada</label><input type="file" class="form-control" id="imagen_portada" name="imagen_portada" accept="image/*"></div>
+        <div class="mb-3"><label for="editor" class="form-label">Contenido</label><div id="editor" class="form-control" style="height: 300px;"></div><input type="hidden" name="contenido" id="contenido"></div>
+        <div class="mb-3"><label for="galeria" class="form-label">Galería de imágenes</label><input type="file" class="form-control" id="galeria" name="galeria" accept="image/*" multiple></div>
+        <div class="d-flex flex-wrap gap-2"><button type="submit" class="btn btn-primary">Guardar publicación</button><a href="{% url 'home:crud_noticia' %}" class="btn btn-outline-secondary">Cancelar</a></div>
+    </form>
+</div>
+{% endblock content %}
+
+{% block extra_js %}
+<script src="https://cdn.jsdelivr.net/npm/quill@2.0.3/dist/quill.min.js"></script>
+<script>
+    const quill = new Quill('#editor', { theme: 'snow', placeholder: 'Escribe el contenido aquí...' });
+    document.querySelector('.formEditor').addEventListener('submit', function () {
+        document.querySelector('#contenido').value = quill.root.innerHTML;
+    });
+</script>
+{% endblock extra_js %}

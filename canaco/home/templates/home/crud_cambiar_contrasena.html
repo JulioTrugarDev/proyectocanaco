@@ -1,0 +1,19 @@
+{% extends 'partials/sidebar_base.html' %}
+{% block title %}Cambiar contraseña | Panel Canaco{% endblock %}
+
+{% block content %}
+<section class="profile-page">
+    <div class="profile-edit-card">
+        <h1>Cambiar contraseña</h1>
+        <p>Actualiza la contraseña de tu cuenta.</p>
+        <div class="alert alert-info" role="status">Maqueta visual: el cambio de contraseña se conectará a la gestión de usuarios.</div>
+        <form method="post" class="profile-edit-form">
+            {% csrf_token %}
+            <div class="profile-form-row"><label for="actual">Contraseña actual</label><input type="password" id="actual" name="actual" autocomplete="current-password" required></div>
+            <div class="profile-form-row"><label for="nueva">Nueva contraseña</label><input type="password" id="nueva" name="nueva" autocomplete="new-password" required></div>
+            <div class="profile-form-row"><label for="confirmar">Confirmar contraseña</label><input type="password" id="confirmar" name="confirmar" autocomplete="new-password" required></div>
+            <div class="profile-form-actions"><button type="submit" class="btn btn-primary">Actualizar contraseña</button><a href="{% url 'home:perfil' %}" class="btn btn-outline-secondary">Volver a mi perfil</a></div>
+        </form>
+    </div>
+</section>
+{% endblock content %}
