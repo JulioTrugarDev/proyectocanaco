@@ -19,3 +19,11 @@ def login(request):
 
 def sign_up(request):
     return render(request, 'home/sign_up.html')
+
+
+def perfil(request):
+    return render(request, 'home/perfil.html')
+
+
+def crud_perfil(request):
+    return render(request, 'home/crud_perfil.html')

@@ -1,0 +1,27 @@
+{% extends 'partials/sidebar_base.html' %}
+{% load static %}
+{% block title %}Mi perfil | Canaco{% endblock %}
+
+{% block content %}
+<section class="profile-page" style="flex-direction: column; align-items: center;">
+    <div class="profile-card">
+        <div class="profile-photo-wrap">
+            {% if perfil_usuario.foto_perfil %}
+                <img src="{{ perfil_usuario.foto_perfil.display_url }}" alt="Foto de perfil" class="profile-photo">
+            {% else %}
+                <img src="{% static 'uploads/profile-default.jpg' %}" alt="Foto de perfil predeterminada" class="profile-photo">
+            {% endif %}
+        </div>
+        <div class="profile-grid">
+            <div class="profile-field"><span>Usuario:</span><strong>{{ request.user.username|default:"Invitado" }}</strong></div>
+            <div class="profile-field"><span>Nombre:</span><strong>{{ request.user.first_name|default:"Sin registrar" }}</strong></div>
+            <div class="profile-field"><span>Apellido paterno:</span><strong>{{ perfil_usuario.apellido_paterno|default:"Sin registrar" }}</strong></div>
+            <div class="profile-field"><span>Apellido materno:</span><strong>{{ perfil_usuario.apellido_materno|default:"Sin registrar" }}</strong></div>
+            <div class="profile-field profile-field-wide"><span>Correo electrónico:</span><strong>{{ request.user.email|default:"Sin registrar" }}</strong></div>
+        </div>
+        <div class="profile-actions">
+            <a href="{% url 'home:crud_perfil' %}" class="btn btn-success">Editar mi perfil</a>
+        </div>
+    </div>
+</section>
+{% endblock content %}
