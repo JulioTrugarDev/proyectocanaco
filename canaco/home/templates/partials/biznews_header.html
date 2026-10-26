@@ -1,0 +1,55 @@
+{% load static %}
+<div class="container-fluid d-none d-lg-block">
+    <div class="row align-items-center bg-dark px-lg-5">
+        <div class="col-lg-9">
+            <span class="text-body small py-2 d-inline-block">Noticias para la comunidad empresarial</span>
+        </div>
+        <div class="col-lg-3 text-right d-none d-md-block">
+            <a class="text-body small px-2" href="{% url 'home:index' %}"><i class="fas fa-home"></i> Canaco</a>
+        </div>
+    </div>
+    <div class="row align-items-center bg-white py-3 px-lg-5">
+        <div class="col-lg-4">
+            <a href="{% url 'home:index' %}" class="navbar-brand p-0 d-none d-lg-block">
+                <h1 class="m-0 display-4 text-uppercase text-primary">Canaco</h1>
+            </a>
+        </div>
+        <div class="col-lg-8 text-center text-lg-right">
+            <span class="text-muted">Información y novedades de nuestra comunidad</span>
+        </div>
+    </div>
+</div>
+<div class="container-fluid p-0">
+    <nav class="navbar navbar-expand-lg bg-dark navbar-dark py-2 py-lg-0 px-lg-5">
+        <a href="{% url 'home:index' %}" class="navbar-brand d-block d-lg-none">
+            <span class="h3 m-0 text-uppercase text-primary">Canaco</span>
+        </a>
+        <button type="button" class="navbar-toggler" data-bs-toggle="collapse" data-bs-target="#navbarCanaco" aria-controls="navbarCanaco" aria-expanded="false" aria-label="Abrir menú">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse justify-content-between px-0 px-lg-3" id="navbarCanaco">
+            <div class="navbar-nav mr-auto py-0">
+                <a href="{% url 'home:index' %}" class="nav-item nav-link">Inicio</a>
+                <a href="{% url 'home:index' %}#noticias" class="nav-item nav-link">Noticias</a>
+                <a href="{% url 'home:categoria' %}" class="nav-item nav-link">Categorías</a>
+                {% if request.user.is_authenticated %}
+                    <a href="{% url 'home:perfil' %}" class="nav-item nav-link">Mi perfil</a>
+                    {% if request.user.is_staff %}<a href="{% url 'home:crud_noticia' %}" class="nav-item nav-link">Panel</a>{% endif %}
+                    <form method="post" action="{% url 'home:logout' %}" class="d-inline">
+                        {% csrf_token %}
+                        <button type="submit" class="nav-item nav-link bg-transparent border-0">Cerrar sesión</button>
+                    </form>
+                {% else %}
+                    <a href="{% url 'home:login' %}" class="nav-item nav-link">Iniciar sesión</a>
+                    <a href="{% url 'home:sign_up' %}" class="nav-item nav-link">Crear cuenta</a>
+                {% endif %}
+            </div>
+            <form class="input-group ml-auto d-flex" style="width:100%;max-width:300px;" method="get" action="{% url 'home:index' %}" role="search">
+                <input type="search" class="form-control border-0" name="q" value="{{ busqueda|default:'' }}" placeholder="Buscar noticias" aria-label="Buscar noticias">
+                <div class="input-group-append">
+                    <button class="input-group-text bg-primary text-dark border-0 px-3" type="submit" aria-label="Buscar"><i class="fa fa-search"></i></button>
+                </div>
+            </form>
+        </div>
+    </nav>
+</div>

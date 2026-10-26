@@ -1,37 +1,56 @@
-{% extends 'partials/base.html' %}
+{% extends 'partials/biznews_base.html' %}
 {% load static %}
 {% block title %}{{ publicacion.titulo }} | Canaco{% endblock %}
-
 {% block content %}
-<section class="section">
+<div class="container-fluid pt-5">
     <div class="container">
-        {% if messages %}{% for message in messages %}<div class="alert alert-{{ message.tags }} alert-dismissible fade show" role="alert">{{ message }}<button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Cerrar"></button></div>{% endfor %}{% endif %}
-        <div class="row blog-entries">
-            <div class="col-md-12 col-lg-8 main-content">
-                <h1 class="mb-4">{{ publicacion.titulo }}</h1>
-                {% if publicacion.imagen_portada %}<img src="{{ publicacion.imagen_portada.display_url }}" alt="{{ publicacion.titulo }}" class="img-fluid rounded mb-4 publication-cover-image" style="max-height:500px;width:100%;object-fit:cover;object-position:center;">{% endif %}
-                <div class="post-meta mb-4"><span>{{ publicacion.createdat|date:'d M Y H:i' }}</span><span>&nbsp;-&nbsp;{% if publicacion.categoria %}<a href="{% url 'home:categoria_detalle' publicacion.categoria.pk %}">{{ publicacion.categoria.nombre }}</a>{% else %}Sin categoría{% endif %}</span><span>&nbsp;-&nbsp;Visitas {{ publicacion.visitas }}</span></div>
-                <h3>Resumen de la noticia</h3><p>{{ publicacion.resumen }}</p>
-                <h3>Noticia</h3><div class="post-content-body">{{ publicacion.contenido|safe }}</div>
-                <h3 class="mt-5">Galería</h3>
-                <div class="row my-4">
-                    {% for imagen in publicacion.galeria.all %}<div class="col-md-4 mb-4"><img src="{{ imagen.archivo.display_url }}" alt="Imagen de la galería de {{ publicacion.titulo }}" class="img-fluid rounded publication-gallery-image" style="height:250px;width:100%;object-fit:cover;object-position:center;"></div>{% empty %}<div class="col-12"><p>Sin imágenes en galería.</p></div>{% endfor %}
-                </div>
-                <div class="pt-4 comment-wrap">
-                    <h3 class="mb-4">Comentarios</h3>
-                    {% for comentario in comentarios %}<div class="border-bottom pb-3 mb-3"><strong>{{ comentario.user.username }}</strong><span class="text-muted"> {{ comentario.createdat|date:'d M Y H:i' }}</span><p class="mb-0">{{ comentario.contenido }}</p></div>{% empty %}<p>No hay comentarios aprobados todavía.</p>{% endfor %}
+        {% if messages %}{% for message in messages %}<div class="alert alert-{% if message.tags == 'error' %}danger{% else %}{{ message.tags }}{% endif %}" role="alert">{{ message }}</div>{% endfor %}{% endif %}
+        <div class="row">
+            <main class="col-lg-8">
+                <article class="bg-white p-4 mb-4">
+                    {% if publicacion.categoria %}<a class="badge badge-primary text-uppercase font-weight-semi-bold p-2 mb-2" href="{% url 'home:categoria_detalle' publicacion.categoria.pk %}">{{ publicacion.categoria.nombre }}</a>{% endif %}
+                    <h1 class="text-uppercase font-weight-bold mb-3">{{ publicacion.titulo }}</h1>
+                    <p class="text-muted">{{ publicacion.createdat|date:'d M Y H:i' }} · {{ publicacion.visitas }} visitas</p>
+                    {% if publicacion.imagen_portada %}<img class="img-fluid w-100 mb-4" src="{{ publicacion.imagen_portada.display_url }}" alt="{{ publicacion.titulo }}" style="max-height:500px;object-fit:cover;">{% endif %}
+                    <h4 class="text-uppercase font-weight-bold">Resumen</h4>
+                    <p>{{ publicacion.resumen }}</p>
+                    <div class="post-content-body">{{ publicacion.contenido|safe }}</div>
+                    {% if publicacion.galeria.all %}
+                    <div class="row mt-4">
+                        {% for imagen in publicacion.galeria.all %}<div class="col-md-4 mb-3"><img class="img-fluid w-100" src="{{ imagen.archivo.display_url }}" alt="Imagen de {{ publicacion.titulo }}" style="height:180px;object-fit:cover;"></div>{% endfor %}
+                    </div>
+                    {% endif %}
+                </article>
+                <section class="bg-white p-4 mb-4">
+                    <h4 class="text-uppercase font-weight-bold mb-3">Comentarios</h4>
+                    {% for comentario in comentarios %}
+                    <div class="border-bottom py-3"><strong>{{ comentario.user.username }}</strong><small class="text-muted ml-2">{{ comentario.createdat|date:'d M Y H:i' }}</small><p class="mb-0 mt-2">{{ comentario.contenido }}</p></div>
+                    {% empty %}<p class="text-muted">No hay comentarios aprobados todavía.</p>{% endfor %}
                     {% if request.user.is_authenticated %}
-                    <form method="post" class="mt-4">{% csrf_token %}<div class="mb-3"><label for="contenido" class="form-label">Agregar comentario</label><textarea name="contenido" id="contenido" rows="4" class="form-control" required></textarea></div><button type="submit" class="btn btn-primary">Agregar comentario</button></form>
+                    <form method="post" class="mt-4">{% csrf_token %}<div class="form-group"><label for="contenido">Deja tu comentario</label><textarea name="contenido" id="contenido" rows="4" class="form-control" required></textarea></div><button type="submit" class="btn btn-primary">Enviar comentario</button></form>
                     {% else %}<a href="{% url 'home:login' %}" class="btn btn-primary mt-3">Inicia sesión para comentar</a>{% endif %}
+                </section>
+            </main>
+            <aside class="col-lg-4">
+                <div class="mb-4">
+                    <div class="section-title mb-0"><h4 class="m-0 text-uppercase font-weight-bold">Otras noticias</h4></div>
+                    <div class="bg-white border border-top-0 p-3">
+                        {% for noticia in recientes %}
+                        <div class="d-flex align-items-center bg-white mb-3">
+                            {% if noticia.imagen_portada %}<img src="{{ noticia.imagen_portada.display_url }}" alt="" style="width:80px;height:80px;object-fit:cover;">{% else %}<img src="{% static 'biznews/img/news-110x110-1.jpg' %}" alt="" style="width:80px;height:80px;object-fit:cover;">{% endif %}
+                            <div class="px-3"><small class="text-muted">{{ noticia.createdat|date:'d M Y' }}</small><a class="d-block text-dark font-weight-bold" href="{% url 'home:noticia_detalle' noticia.pk %}">{{ noticia.titulo }}</a></div>
+                        </div>
+                        {% empty %}<p class="text-muted mb-0">No hay más noticias.</p>{% endfor %}
+                    </div>
                 </div>
-            </div>
-            <div class="col-md-12 col-lg-4 sidebar">
-                <div class="sidebar-box"><h3 class="heading">Otras noticias</h3><div class="post-entry-sidebar"><ul>
-                    {% for noticia in recientes %}<li><a href="{% url 'home:noticia_detalle' noticia.pk %}">{% if noticia.imagen_portada %}<img src="{{ noticia.imagen_portada.display_url }}" alt="{{ noticia.titulo }}" class="me-4 rounded sidebar-post-image" style="width:70px;height:70px;object-fit:cover;object-position:center;">{% endif %}<div class="text"><h4>{{ noticia.titulo }}</h4><div class="post-meta"><span>{{ noticia.createdat|date:'d M Y' }}</span></div></div></a></li>{% empty %}<li>No hay más noticias.</li>{% endfor %}
-                </ul></div></div>
-                <div class="sidebar-box"><h3 class="heading">Categorías</h3><ul class="categories">{% for categoria in categorias %}<li><a href="{% url 'home:categoria_detalle' categoria.pk %}">{{ categoria.nombre }}</a></li>{% empty %}<li>No hay categorías.</li>{% endfor %}</ul></div>
-            </div>
+                <div class="mb-4">
+                    <div class="section-title mb-0"><h4 class="m-0 text-uppercase font-weight-bold">Categorías</h4></div>
+                    <div class="bg-white border border-top-0 p-3">
+                        {% for categoria in categorias %}<a href="{% url 'home:categoria_detalle' categoria.pk %}" class="btn btn-sm btn-outline-secondary m-1">{{ categoria.nombre }}</a>{% empty %}<span class="text-muted">Todavía no hay categorías.</span>{% endfor %}
+                    </div>
+                </div>
+            </aside>
         </div>
     </div>
-</section>
+</div>
 {% endblock content %}

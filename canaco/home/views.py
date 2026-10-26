@@ -2,7 +2,7 @@ from django.contrib import messages
 from django.contrib.auth import update_session_auth_hash
 from django.contrib.auth.decorators import login_required, user_passes_test
 from django.contrib.auth.models import User
-from django.db.models import F
+from django.db.models import F, Q
 from django.shortcuts import get_object_or_404, redirect, render
 from django.utils.html import strip_tags
 
@@ -17,10 +17,23 @@ operador_required = user_passes_test(es_operador, login_url='home:login')
 
 
 def index(request):
-    publicaciones = Publicacion.objects.filter(
+    busqueda = request.GET.get('q', '').strip()
+    publicaciones_qs = Publicacion.objects.filter(
         estado=Publicacion.ESTADO_PUBLICADO,
-    ).select_related('categoria', 'imagen_portada').order_by('-createdat')[:6]
-    return render(request, 'home/index.html', {'publicaciones': publicaciones})
+    ).select_related('categoria', 'imagen_portada').order_by('-createdat')
+    if busqueda:
+        publicaciones_qs = publicaciones_qs.filter(
+            Q(titulo__icontains=busqueda)
+            | Q(resumen__icontains=busqueda)
+            | Q(contenido__icontains=busqueda)
+        )
+    publicaciones = list(publicaciones_qs[:7])
+    return render(request, 'home/index.html', {
+        'publicaciones': publicaciones,
+        'destacada': publicaciones[0] if publicaciones else None,
+        'ultimas': publicaciones[1:] if publicaciones else [],
+        'busqueda': busqueda,
+    })
 
 
 def noticia(request, pk=None):

@@ -1,31 +1,36 @@
-{% extends 'partials/base.html' %}
+{% extends 'partials/biznews_base.html' %}
 {% load static %}
 {% block title %}{% if categoria_seleccionada %}{{ categoria_seleccionada.nombre }}{% else %}Categorías{% endif %} | Canaco{% endblock %}
-
 {% block content %}
-<section class="section">
+<div class="container-fluid pt-5">
     <div class="container">
-        <div class="row mb-4 align-items-center">
-            <div class="col-lg-8"><h1 class="posts-entry-title">{% if categoria_seleccionada %}Categoría: {{ categoria_seleccionada.nombre }}{% else %}Noticias por categoría{% endif %}</h1></div>
-            <div class="col-lg-4">
-                <label for="category-select" class="form-label">Explorar categorías</label>
-                <select id="category-select" class="form-control" onchange="if (this.value) window.location.href=this.value;">
-                    <option value="{% url 'home:categoria' %}" {% if not categoria_seleccionada %}selected{% endif %}>Todas las categorías</option>
-                    {% for categoria in categorias %}<option value="{% url 'home:categoria_detalle' categoria.pk %}" {% if categoria_seleccionada.pk == categoria.pk %}selected{% endif %}>{{ categoria.nombre }}</option>{% endfor %}
-                </select>
-            </div>
+        <div class="section-title">
+            <h4 class="m-0 text-uppercase font-weight-bold">{% if categoria_seleccionada %}{{ categoria_seleccionada.nombre }}{% else %}Noticias por categoría{% endif %}</h4>
         </div>
-        {% for publicacion in publicaciones %}
-        <article class="row mb-5 align-items-center">
-            {% if publicacion.imagen_portada %}<div class="col-lg-3 mb-3 mb-lg-0"><a href="{% url 'home:noticia_detalle' publicacion.pk %}" class="img-link"><img src="{{ publicacion.imagen_portada.display_url }}" alt="{{ publicacion.titulo }}" class="img-fluid category-post-image"></a></div>{% endif %}
-            <div class="col-lg-8">
-                <span class="date">{{ publicacion.createdat|date:'d M Y' }} &bullet; {% if publicacion.categoria %}{{ publicacion.categoria.nombre }}{% else %}Sin categoría{% endif %}</span>
-                <h2><a href="{% url 'home:noticia_detalle' publicacion.pk %}">{{ publicacion.titulo }}</a></h2>
-                <p>{{ publicacion.resumen }}</p>
-                <p><a href="{% url 'home:noticia_detalle' publicacion.pk %}" class="btn btn-sm btn-outline-primary">Leer más</a></p>
+        <div class="mb-4">
+            <a href="{% url 'home:categoria' %}" class="btn btn-sm {% if not categoria_seleccionada %}btn-primary{% else %}btn-outline-secondary{% endif %} mr-1 mb-2">Todas</a>
+            {% for categoria in categorias %}
+            <a href="{% url 'home:categoria_detalle' categoria.pk %}" class="btn btn-sm {% if categoria_seleccionada.pk == categoria.pk %}btn-primary{% else %}btn-outline-secondary{% endif %} mr-1 mb-2">{{ categoria.nombre }}</a>
+            {% empty %}<span class="text-muted">Todavía no hay categorías.</span>{% endfor %}
+        </div>
+        <div class="row">
+            {% for publicacion in publicaciones %}
+            <div class="col-lg-4 col-md-6 mb-4">
+                <article class="bg-white h-100">
+                    <a href="{% url 'home:noticia_detalle' publicacion.pk %}">
+                        {% if publicacion.imagen_portada %}<img class="img-fluid w-100" src="{{ publicacion.imagen_portada.display_url }}" alt="{{ publicacion.titulo }}" style="height:220px;object-fit:cover;">
+                        {% else %}<img class="img-fluid w-100" src="{% static 'biznews/img/news-700x435-3.jpg' %}" alt="" style="height:220px;object-fit:cover;">{% endif %}
+                    </a>
+                    <div class="p-3">
+                        <small class="text-muted">{{ publicacion.createdat|date:'d M Y' }}</small>
+                        <h5 class="text-uppercase font-weight-bold mt-2"><a class="text-dark" href="{% url 'home:noticia_detalle' publicacion.pk %}">{{ publicacion.titulo }}</a></h5>
+                        <p class="text-muted">{{ publicacion.resumen|truncatechars:140 }}</p>
+                        <a href="{% url 'home:noticia_detalle' publicacion.pk %}" class="font-weight-bold">Leer noticia</a>
+                    </div>
+                </article>
             </div>
-        </article>
-        {% empty %}<p class="text-muted">No hay noticias publicadas en esta categoría.</p>{% endfor %}
+            {% empty %}<div class="col-12"><p class="text-muted">No hay noticias publicadas en esta categoría.</p></div>{% endfor %}
+        </div>
     </div>
-</section>
+</div>
 {% endblock content %}
