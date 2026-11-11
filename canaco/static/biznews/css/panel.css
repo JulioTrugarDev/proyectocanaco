@@ -1,0 +1,90 @@
+/* Canaco admin panel, styled to match the BizNews theme. */
+.panel-shell {
+    padding: 32px 0 48px;
+    background: #f4f5f7;
+}
+
+.panel-layout {
+    display: flex;
+    align-items: flex-start;
+    gap: 28px;
+}
+
+.panel-sidebar {
+    width: 230px;
+    flex: 0 0 230px;
+    overflow: hidden;
+    background: #fff;
+    border-top: 4px solid #ffcc00;
+    box-shadow: 0 4px 18px rgba(30, 32, 36, .08);
+}
+
+.panel-sidebar .nav {
+    padding: 8px;
+}
+
+.panel-nav-link {
+    min-height: 48px;
+    display: flex;
+    align-items: center;
+    padding: 12px 16px;
+    border-radius: 3px !important;
+    color: #31404b;
+    font-size: 14px;
+    font-weight: 600;
+    text-decoration: none;
+    transition: background-color .2s ease, color .2s ease;
+}
+
+.panel-nav-link:hover,
+.panel-nav-link:focus {
+    color: #1e2024;
+    background: #fff5c2;
+}
+
+.panel-nav-link.active {
+    color: #1e2024 !important;
+    background: #ffcc00 !important;
+    box-shadow: none;
+}
+
+.panel-sidebar .panel-logout-button {
+    min-height: 44px;
+    border: 0;
+    border-radius: 3px;
+    font-size: 12px;
+    font-weight: 700;
+    letter-spacing: .04em;
+}
+
+.panel-content {
+    min-width: 0;
+    flex: 1 1 auto;
+    padding: 26px;
+    background: #fff;
+    box-shadow: 0 4px 18px rgba(30, 32, 36, .06);
+}
+
+.panel-content .container {
+    width: 100%;
+    max-width: none;
+    margin: 0;
+    padding: 0;
+}
+
+.panel-content .gap-3 { gap: 1rem; }
+.panel-content .me-1 { margin-right: .25rem; }
+
+@media (max-width: 767.98px) {
+    .panel-shell { padding: 20px 0 32px; }
+    .panel-layout { flex-direction: column; gap: 18px; }
+    .panel-sidebar { width: 100%; flex-basis: auto; }
+    .panel-sidebar .nav {
+        flex-direction: row !important;
+        overflow-x: auto;
+        margin-bottom: 0;
+    }
+    .panel-sidebar li { flex: 0 0 auto; }
+    .panel-nav-link { min-width: 130px; justify-content: center; }
+    .panel-content { width: 100%; padding: 18px; }
+}

@@ -1,0 +1,125 @@
+.canaco-carousel {
+    position: relative;
+    width: 100%;
+    height: clamp(380px, 54vw, 650px);
+    overflow: hidden;
+    color: #fff;
+    background: #1e2024;
+}
+
+.canaco-carousel-slides,
+.canaco-slide {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+}
+
+.canaco-slide[hidden] {
+    display: none !important;
+}
+
+.canaco-slide-image {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+    object-position: center;
+    background: #1e2024;
+}
+
+.canaco-slide::after {
+    position: absolute;
+    inset: 45% 0 0;
+    content: "";
+    background: linear-gradient(transparent, rgba(0, 0, 0, .82));
+    pointer-events: none;
+}
+
+.canaco-slide-caption {
+    position: absolute;
+    z-index: 1;
+    right: max(8%, calc((100% - 1200px) / 2));
+    bottom: 64px;
+    left: max(8%, calc((100% - 1200px) / 2));
+    text-shadow: 0 1px 3px rgba(0, 0, 0, .8);
+}
+
+.canaco-slide-title {
+    display: block;
+    margin-bottom: 8px;
+    color: #fff;
+    font-size: clamp(1.5rem, 3vw, 2.5rem);
+    font-weight: 700;
+    line-height: 1.15;
+    text-decoration: none;
+    text-transform: uppercase;
+}
+
+.canaco-slide-title:hover,
+.canaco-slide-title:focus {
+    color: #ffcc00;
+}
+
+.canaco-carousel-control {
+    position: absolute;
+    z-index: 2;
+    top: 50%;
+    display: grid;
+    width: 48px;
+    height: 64px;
+    padding: 0;
+    transform: translateY(-50%);
+    place-items: center;
+    border: 0;
+    border-radius: 3px;
+    color: #1e2024;
+    background: #ffcc00;
+    font-size: 20px;
+    cursor: pointer;
+    opacity: .94;
+}
+
+.canaco-carousel-control:hover,
+.canaco-carousel-control:focus-visible {
+    background: #fff;
+    opacity: 1;
+}
+
+.canaco-carousel-prev { left: 20px; }
+.canaco-carousel-next { right: 20px; }
+
+.canaco-carousel-indicators {
+    position: absolute;
+    z-index: 2;
+    right: 0;
+    bottom: 22px;
+    left: 0;
+    display: flex;
+    justify-content: center;
+    gap: 9px;
+}
+
+.canaco-carousel-indicator {
+    width: 10px;
+    height: 10px;
+    padding: 0;
+    border: 1px solid #fff;
+    border-radius: 50%;
+    background: transparent;
+    cursor: pointer;
+}
+
+.canaco-carousel-indicator.is-active {
+    border-color: #ffcc00;
+    background: #ffcc00;
+}
+
+@media (max-width: 767.98px) {
+    .canaco-carousel { height: clamp(360px, 100vw, 520px); }
+    .canaco-slide-caption { right: 62px; bottom: 62px; left: 62px; }
+    .canaco-carousel-prev { left: 8px; }
+    .canaco-carousel-next { right: 8px; }
+    .canaco-carousel-control { width: 40px; height: 52px; }
+}

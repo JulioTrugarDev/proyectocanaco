@@ -1,11 +1,49 @@
-<footer class="container-fluid bg-dark pt-4 pb-3 px-sm-3 px-md-5 mt-5">
+{% load static %}
+<footer class="container-fluid bg-dark pt-5 px-sm-3 px-md-5 mt-5">
     <div class="container">
-        <div class="row align-items-center">
+        <div class="row py-4">
+            <div class="col-lg-4 col-md-6 mb-4">
+                <h5 class="mb-4 text-white text-uppercase font-weight-bold">Canaco</h5>
+                <p class="text-body">Noticias y novedades para nuestra comunidad empresarial.</p>
+                <p class="text-body">Consulta publicaciones, categorías y avisos recientes.</p>
+            </div>
+            <div class="col-lg-4 col-md-6 mb-4">
+                <h5 class="mb-4 text-white text-uppercase font-weight-bold">Categorías</h5>
+                <div class="m-n1">
+                    {% for categoria in global_categorias %}
+                    <a href="{% url 'home:categoria_detalle' categoria.pk %}" class="btn btn-sm btn-secondary m-1">{{ categoria.nombre }}</a>
+                    {% empty %}
+                    <span class="text-body">Todavía no hay categorías.</span>
+                    {% endfor %}
+                </div>
+            </div>
+            <div class="col-lg-4 col-md-12 mb-4">
+                <h5 class="mb-4 text-white text-uppercase font-weight-bold">Entradas recientes</h5>
+                {% for noticia in global_recientes %}
+                <div class="d-flex align-items-center mb-3">
+                    <a href="{% url 'home:noticia_detalle' noticia.pk %}" class="d-flex align-items-center text-body">
+                        {% if noticia.imagen_portada %}
+                        <img src="{{ noticia.imagen_portada.display_url }}" alt="{{ noticia.titulo }}" style="width:70px;height:70px;object-fit:cover;">
+                        {% else %}
+                        <img src="{% static 'biznews/img/news-110x110-1.jpg' %}" alt="" style="width:70px;height:70px;object-fit:cover;">
+                        {% endif %}
+                        <span class="ml-3">
+                            <small class="d-block">{{ noticia.createdat|date:'d M Y' }}</small>
+                            <strong>{{ noticia.titulo|truncatechars:65 }}</strong>
+                        </span>
+                    </a>
+                </div>
+                {% empty %}
+                <p class="text-body">No hay noticias recientes.</p>
+                {% endfor %}
+            </div>
+        </div>
+        <div class="row border-top border-secondary py-3">
             <div class="col-md-6 text-center text-md-left mb-2 mb-md-0">
-                <p class="m-0 text-body">&copy; {% now "Y" %} Canaco. Noticias para nuestra comunidad.</p>
+                <p class="m-0 text-body">&copy; {% now "Y" %} Canaco. Todos los derechos reservados.</p>
             </div>
             <div class="col-md-6 text-center text-md-right">
-                <small class="text-body">Diseño basado en <a href="https://htmlcodex.com" rel="license">HTML Codex</a> · Distribuido por <a href="https://themewagon.com">ThemeWagon</a></small>
+                <small class="text-body">Diseño basado en <a href="https://htmlcodex.com">HTML Codex</a> · Distribuido por <a href="https://themewagon.com">ThemeWagon</a></small>
             </div>
         </div>
     </div>

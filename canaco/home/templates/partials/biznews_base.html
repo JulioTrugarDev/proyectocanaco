@@ -11,6 +11,7 @@
     <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.0/css/all.min.css">
     <link rel="stylesheet" href="{% static 'biznews/css/style.css' %}">
+    <link rel="stylesheet" href="{% static 'biznews/css/canaco-carousel.css' %}">
     <title>{% block title %}Canaco{% endblock %}</title>
 </head>
 <body>
@@ -19,5 +20,6 @@
     {% include 'partials/biznews_footer.html' %}
     <a href="#" class="btn btn-primary btn-square back-to-top" aria-label="Volver arriba"><i class="fa fa-arrow-up"></i></a>
     <script src="{% static 'js/bootstrap.bundle.min.js' %}"></script>
+    <script src="{% static 'biznews/js/canaco-carousel.js' %}"></script>
 </body>
 </html>
