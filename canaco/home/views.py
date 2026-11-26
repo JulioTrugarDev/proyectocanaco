@@ -2,8 +2,11 @@ from django.contrib import messages
 from django.contrib.auth import update_session_auth_hash
 from django.contrib.auth.decorators import login_required, user_passes_test
 from django.contrib.auth.models import User
+from django.http import JsonResponse
+from django.db import connection
 from django.db.models import F, Q
 from django.shortcuts import get_object_or_404, redirect, render
+from django.urls import reverse
 from django.utils.html import strip_tags
 
 from .models import Archivo, Categoria, Comentario, GaleriaPublicacion, Perfil, Publicacion
@@ -14,6 +17,14 @@ def es_operador(user):
 
 
 operador_required = user_passes_test(es_operador, login_url='home:login')
+def healthz(request):
+    """Health endpoint used by Docker to verify Django and its database."""
+    try:
+        with connection.cursor() as cursor:
+            cursor.execute('SELECT 1')
+    except Exception:
+        return JsonResponse({'status': 'error'}, status=503)
+    return JsonResponse({'status': 'ok'})
 
 
 def index(request):
@@ -94,6 +105,14 @@ def categoria(request, pk=None):
 
 
 def sign_up(request):
+    is_ajax = request.headers.get('x-requested-with') == 'XMLHttpRequest'
+
+    def signup_error(message):
+        if is_ajax:
+            return JsonResponse({'ok': False, 'message': message}, status=400)
+        messages.error(request, message)
+        return redirect('home:sign_up')
+
     if request.method == 'POST':
         username = request.POST.get('username', '').strip()
         email = request.POST.get('email', '').strip()
@@ -104,17 +123,13 @@ def sign_up(request):
         password2 = request.POST.get('password2', '')
 
         if not username or not password1:
-            messages.error(request, 'El usuario y la contraseña son obligatorios.')
-            return redirect('home:sign_up')
+            return signup_error('El usuario y la contraseña son obligatorios.')
         if password1 != password2:
-            messages.error(request, 'Las contraseñas no coinciden.')
-            return redirect('home:sign_up')
+            return signup_error('Las contraseñas no coinciden.')
         if User.objects.filter(username=username).exists():
-            messages.error(request, 'El nombre de usuario ya está en uso.')
-            return redirect('home:sign_up')
+            return signup_error('El nombre de usuario ya está en uso.')
         if email and User.objects.filter(email=email).exists():
-            messages.error(request, 'El correo electrónico ya está registrado.')
-            return redirect('home:sign_up')
+            return signup_error('El correo electrónico ya está registrado.')
 
         user = User.objects.create_user(username=username, email=email, password=password1)
         user.first_name = first_name
@@ -124,11 +139,18 @@ def sign_up(request):
         perfil.apellido_paterno = apellido_paterno
         perfil.apellido_materno = apellido_materno
         perfil.save()
+
+        if is_ajax:
+            return JsonResponse({
+                'ok': True,
+                'message': 'Tu cuenta se creó correctamente.',
+                'login_url': reverse('home:login'),
+            }, status=201)
+
         messages.success(request, 'Tu cuenta se creó correctamente. Ahora puedes iniciar sesión.')
         return redirect('home:login')
 
     return render(request, 'home/sign_up.html')
-
 
 @login_required
 def perfil(request):

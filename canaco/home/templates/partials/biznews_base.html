@@ -13,6 +13,14 @@
     <link rel="stylesheet" href="{% static 'biznews/css/style.css' %}">
     <link rel="stylesheet" href="{% static 'biznews/css/canaco-carousel.css' %}">
     <title>{% block title %}Canaco{% endblock %}</title>
+    <!-- Google tag (gtag.js) -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-L83LVPCFRF"></script>
+    <script>
+        window.dataLayer = window.dataLayer || [];
+        function gtag(){dataLayer.push(arguments);}
+        gtag('js', new Date());
+        gtag('config', 'G-L83LVPCFRF');
+    </script>
 </head>
 <body>
     {% include 'partials/biznews_header.html' %}

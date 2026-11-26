@@ -1,0 +1,69 @@
+services:
+  db:
+    image: postgres:16-alpine
+    restart: unless-stopped
+    env_file:
+      - canaco/deploy/docker.env
+    environment:
+      POSTGRES_DB: ${DB_NAME:?Set DB_NAME in canaco/deploy/docker.env}
+      POSTGRES_USER: ${DB_USER:?Set DB_USER in canaco/deploy/docker.env}
+      POSTGRES_PASSWORD: ${DB_PASSWORD:?Set DB_PASSWORD in canaco/deploy/docker.env}
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U \"$${POSTGRES_USER}\" -d \"$${POSTGRES_DB}\""]
+      interval: 5s
+      timeout: 5s
+      retries: 12
+      start_period: 10s
+
+  web:
+    image: ${IMAGE:-ghcr.io/juliotrugardev/proyectocanaco}:${IMAGE_TAG:-latest}
+    build:
+      context: .
+      dockerfile: Dockerfile
+    restart: unless-stopped
+    env_file:
+      - canaco/deploy/docker.env
+    environment:
+      DJANGO_SETTINGS_MODULE: canaco.settings_docker
+      DB_HOST: db
+      DB_PORT: "5432"
+      DJANGO_STATIC_ROOT: /app/staticfiles
+      DJANGO_MEDIA_ROOT: /app/media
+    depends_on:
+      db:
+        condition: service_healthy
+    volumes:
+      - static_files:/app/staticfiles
+      - media_files:/app/media
+    healthcheck:
+      test: ["CMD", "python", "-c", "import urllib.request; req=urllib.request.Request('http://127.0.0.1:8000/healthz/',headers={'Host':'canacotgfg.mexicocentral.cloudapp.azure.com','X-Forwarded-Proto':'https'}); urllib.request.urlopen(req, timeout=3)"]
+      interval: 15s
+      timeout: 5s
+      retries: 5
+      start_period: 90s
+
+  caddy:
+    image: caddy:2-alpine
+    restart: unless-stopped
+    ports:
+      - "${HTTP_PORT:-8080}:80"
+      - "${HTTPS_PORT:-8443}:443"
+      - "${HTTPS_PORT:-8443}:443/udp"
+    depends_on:
+      web:
+        condition: service_healthy
+    volumes:
+      - ./${CADDYFILE:-canaco/deploy/Caddyfile}:/etc/caddy/Caddyfile:ro
+      - caddy_data:/data
+      - caddy_config:/config
+      - static_files:/var/www/static:ro
+      - media_files:/var/www/media:ro
+
+volumes:
+  pgdata:
+  static_files:
+  media_files:
+  caddy_data:
+  caddy_config:

@@ -1,4 +1,5 @@
 {% extends 'partials/biznews_base.html' %}
+{% load static %}
 {% block title %}Crear cuenta | Canaco{% endblock %}
 {% block content %}
 <div class="container py-5">
@@ -8,7 +9,8 @@
                 <h1 class="text-uppercase font-weight-bold mb-2">Crear una cuenta</h1>
                 <p class="text-muted">Regístrate para formar parte de la comunidad Canaco.</p>
                 {% if messages %}{% for message in messages %}<div class="alert alert-{% if message.tags == 'error' %}danger{% else %}{{ message.tags }}{% endif %}" role="alert">{{ message }}</div>{% endfor %}{% endif %}
-                <form method="post">{% csrf_token %}
+                <div id="registro-status" class="d-none" role="status" aria-live="polite"></div>
+                <form method="post" id="registro-form">{% csrf_token %}
                     <div class="form-row">
                         <div class="form-group col-md-6"><label for="username">Usuario</label><input type="text" id="username" name="username" class="form-control" autocomplete="username" required></div>
                         <div class="form-group col-md-6"><label for="email">Correo electrónico</label><input type="email" id="email" name="email" class="form-control" autocomplete="email" required></div>
@@ -25,4 +27,5 @@
         </div>
     </div>
 </div>
+<script src="{% static 'biznews/js/registro-ajax.js' %}" defer></script>
 {% endblock content %}

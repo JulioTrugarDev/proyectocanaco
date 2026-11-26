@@ -1,0 +1,20 @@
+# Python
+__pycache__/
+*.py[cod]
+
+# Local databases and uploaded media
+canaco/db.sqlite3
+canaco/media/
+canaco/staticfiles/
+
+# Local secrets and environment files
+*.env
+*.env.*
+!*.env.example
+!*.env.azure.example
+!docker.env.example
+!docker.env.azure.example
+canaco/deploy/docker.env
+
+# Local editor files
+.vscode/

@@ -1,0 +1,14 @@
+.git
+.github
+.vscode
+canaco_env
+**/__pycache__/
+**/*.py[cod]
+**/.env
+**/.env.*
+canaco/db.sqlite3
+canaco/media/
+canaco/staticfiles/
+canaco/deploy/docker.env
+*.pem
+*.ppk
